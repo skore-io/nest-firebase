@@ -16,13 +16,20 @@ class NeverCalledListener {
 class SimpleListener {
   @OnMessage('events')
   onMessage(message: Message) {
-    expect(message.json.company_id).toBe('114')
-    expect(message.json.batch_id).toBe('1AgP2VGe5MvX2eBnxxx')
+    expect(message.json.companyId).toBe('114')
+    expect(message.json.id).toBe('1AgP2VGe5MvX2eBnxxx')
+  }
+}
+@Injectable()
+class RegexListener {
+  @OnMessage('events-*')
+  onMessage(message: Message) {
+    expect(message.attributes.type).toBe('regex-type')
   }
 }
 @Module({
   imports: [DiscoveryModule],
-  providers: [SimpleListener, NeverCalledListener]
+  providers: [SimpleListener, NeverCalledListener, RegexListener]
 })
 class TestModule { }
 
@@ -47,5 +54,10 @@ export class PubsubHandlerTest extends BaseTest {
   async messageWithoutListener() {
     await PubsubHandler.handle(this.message(), this.context('no-listeners'), this.discoveryService)
     expect(true).toBeTruthy()
+  }
+
+  @test('Given message without subscription using regex then do not invoke any RegexListener')
+  async messageWithRegexListener() {
+    await PubsubHandler.handle(this.message('regex-type'), this.context('events-skore-2020'), this.discoveryService)
   }
 }

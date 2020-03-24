@@ -1,13 +1,11 @@
-import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
+import { DiscoveryService } from "@golevelup/nestjs-discovery";
 import { NestFactory } from "@nestjs/core";
 import { EventContext } from "firebase-functions";
 import { Message } from "firebase-functions/lib/providers/pubsub";
-import { MESSAGET_TOPIC } from "../constants";
+import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
+import {flatMap} from 'lodash'
 
 export class PubsubHandler {
-  private static classNamePredicate = (p1: DiscoveredMethodWithMeta<unknown>, p2: DiscoveredMethodWithMeta<unknown>) =>
-    p1.discoveredMethod.parentClass.name === p2.discoveredMethod.parentClass.name
-
   static async handle(message: Message, context: EventContext, service?: DiscoveryService): Promise<any> {
     const topicResourceName = context.resource.name.split('/')[3]
 
@@ -22,17 +20,38 @@ export class PubsubHandler {
       discoveryService = nest.get(DiscoveryService)
     }
 
-    const providers = await discoveryService.providerMethodsWithMetaAtKey(MESSAGET_TOPIC)
+    const [topicProviders, typeProviders, actionProviders] = await Promise.all([
+      discoveryService.providerMethodsWithMetaAtKey(MESSAGET_TOPIC),
+      discoveryService.providerMethodsWithMetaAtKey(MESSAGE_TYPE),
+      discoveryService.providerMethodsWithMetaAtKey(MESSAGE_ACTION)
+    ])
 
-    const eventsHandler = providers.filter(provider => provider.meta === topicResourceName)
+    const handlers = []
 
-    if (eventsHandler.length === 0) {
+    handlers.push(topicProviders.filter(provider => provider.meta === topicResourceName))
+
+    handlers.push(typeProviders.filter(({ meta }) => {
+      const [topic, type] = String(meta).split('|')
+      return topicResourceName === topic &&
+        new RegExp(type).test(message.attributes.type)
+    }))
+
+    handlers.push(actionProviders.filter(({ meta }) => {
+      const [topic, type, action] = String(meta).split('|')
+      return topicResourceName === topic &&
+        new RegExp(type).test(message.attributes.type) &&
+        new RegExp(action).test(message.attributes.action)
+    }))
+
+    const providers = flatMap(handlers)
+
+    if (providers.length === 0) {
       console.info('No handlers found')
       return Promise.resolve()
     }
 
-    console.info('Invoking handlers=%s', eventsHandler.map(h => h.discoveredMethod.parentClass.name))
+    console.info('Invoking handlers=%s', providers.map(h => h.discoveredMethod.parentClass.name))
 
-    return Promise.all(eventsHandler.map(handler => handler.discoveredMethod.handler(message)))
+    return Promise.all(providers.map(handler => handler.discoveredMethod.handler(message)))
   }
 }

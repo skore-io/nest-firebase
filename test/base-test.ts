@@ -6,11 +6,10 @@ export abstract class BaseTest {
     expect.hasAssertions()
   }
 
-  protected message(type = 'io.skore.events.user', companyId = '114'): Message {
+  protected message(type = 'io.skore.events.user', companyId = '114', action = 'indexed', id = '1AgP2VGe5MvX2eBnxxx'): Message {
     return {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      json: { company_id: companyId, batch_id: '1AgP2VGe5MvX2eBnxxx' },
-      attributes: { type, action: 'indexed' },
+      json: { companyId, id },
+      attributes: { type, action },
     } as unknown as Message
   }
 
