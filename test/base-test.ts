@@ -1,23 +1,22 @@
-import { EventContext } from "firebase-functions"
-import { Message } from "firebase-functions/lib/providers/pubsub"
+import { NestFactory } from "@nestjs/core"
+import { pubsub } from "firebase-functions"
+import * as firebaseFunctionsTest from 'firebase-functions-test'
+import { PubsubHandler } from "../src"
 
 export abstract class BaseTest {
   before() {
     expect.hasAssertions()
   }
 
-  protected message(type = 'io.skore.events.user', companyId = '114', action = 'indexed', id = '1AgP2VGe5MvX2eBnxxx'): Message {
-    return {
-      json: { companyId, id },
-      attributes: { type, action },
-    } as unknown as Message
-  }
+  protected run(topic: string, module: any, message: any, attributes: any) {
+    const fn = pubsub.topic(topic).onPublish(async (message, context) => {
+      const handler = (await NestFactory.create(module)).get(PubsubHandler)
+      return handler.handle(message, context)
+    })
 
-  protected context(topicName: string): EventContext {
-    return {
-      resource: {
-        name: `projects/test/topics/${topicName}`
-      }
-    } as EventContext
+    return firebaseFunctionsTest().wrap(fn)({
+      json: message,
+      attributes
+    })
   }
 }

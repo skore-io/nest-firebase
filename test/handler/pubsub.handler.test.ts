@@ -1,10 +1,8 @@
-import { DiscoveryModule, DiscoveryService } from '@golevelup/nestjs-discovery'
 import { Injectable, Module } from '@nestjs/common'
-import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
 import { Message } from 'firebase-functions/lib/providers/pubsub'
+import { NestFirebaseModule } from '../../src'
 import { OnMessage } from '../../src/decorator'
-import { PubsubHandler } from '../../src/handler'
 import { BaseTest } from '../base-test'
 
 @Injectable()
@@ -13,51 +11,41 @@ class NeverCalledListener {
   onMessage() { expect(false).toBeTruthy() }
 }
 @Injectable()
-class SimpleListener {
-  @OnMessage('events')
+class RegexListener {
+  @OnMessage('regex-*')
   onMessage(message: Message) {
-    expect(message.json.companyId).toBe('114')
-    expect(message.json.id).toBe('1AgP2VGe5MvX2eBnxxx')
+    expect(message.json.id).toBe('regex-type')
   }
 }
 @Injectable()
-class RegexListener {
-  @OnMessage('events-*')
+class SimpleListener {
+  @OnMessage('events')
   onMessage(message: Message) {
-    expect(message.attributes.type).toBe('regex-type')
+    expect(message.json.id).toBe('1AgP2VGe5MvX2eBnxxx')
   }
 }
+
 @Module({
-  imports: [DiscoveryModule],
-  providers: [SimpleListener, NeverCalledListener, RegexListener]
+  imports: [NestFirebaseModule],
+  providers: [NeverCalledListener, RegexListener, SimpleListener]
 })
 class TestModule { }
 
 @suite('[Decorator] On message decorator')
 export class PubsubHandlerTest extends BaseTest {
-  private discoveryService: DiscoveryService
-
-  async before() {
-    const moduleRef = await Test.createTestingModule({
-      imports: [TestModule]
-    }).compile()
-
-    this.discoveryService = moduleRef.get<DiscoveryService>(DiscoveryService)
-  }
-
   @test('Given message with subscription then invoke SimpleListener')
   async messageWithListener() {
-    await PubsubHandler.handle(this.message(), this.context('events'), this.discoveryService)
+    await this.run('events', TestModule, { id: '1AgP2VGe5MvX2eBnxxx' }, {})
   }
 
-  @test('Given message without subscription then do not invoke any listener')
-  async messageWithoutListener() {
-    await PubsubHandler.handle(this.message(), this.context('no-listeners'), this.discoveryService)
-    expect(true).toBeTruthy()
-  }
-
-  @test('Given message without subscription using regex then do not invoke any RegexListener')
+  @test('Given message with subscription using regex then invoke RegexListener')
   async messageWithRegexListener() {
-    await PubsubHandler.handle(this.message('regex-type'), this.context('events-skore-2020'), this.discoveryService)
+    await this.run('regex-some-string', TestModule, { id: 'regex-type' }, {})
+  }
+
+  @test('Given message without subscription no listener should be invoked')
+  async messageIgnore() {
+    await this.run('never-topic', TestModule, {}, {})
+    expect(true).toBeTruthy()
   }
 }
