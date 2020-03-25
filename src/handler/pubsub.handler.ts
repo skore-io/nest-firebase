@@ -6,6 +6,28 @@ import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
 import {flatMap} from 'lodash'
 
 export class PubsubHandler {
+  /**
+   * Handle messages from firebase lib.
+   *
+   * Receives messages from pubsub through firebase lib and create a nest
+   * application ctx
+   *
+   * Fetch all providers with decorators: `@OnMessage()` and filter messages
+   * according decorator specification
+   *
+   * Invokes all providers at same time promisifying all of them
+   *
+   * How to use:
+   *
+   * In your index.ts file:
+   * ```typescript
+   * export const onMessage = pubsub.topic('events').handler(PubsubHandler.handle)
+   * ```
+   *
+   * @param message - Message from pubsub
+   * @param context - EventContext from pubsub
+   */
+  static async handle(message: Message, context: EventContext): Promise<any>
   static async handle(message: Message, context: EventContext, service?: DiscoveryService): Promise<any> {
     const topicResourceName = context.resource.name.split('/')[3]
 
