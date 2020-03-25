@@ -1,3 +1,3 @@
 export * from './handler'
 export * from './decorator'
-export * from './app.module'
+export * from './nest-firebase.module'

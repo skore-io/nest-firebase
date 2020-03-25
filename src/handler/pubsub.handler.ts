@@ -1,9 +1,14 @@
 import { DiscoveryService } from "@golevelup/nestjs-discovery";
-import { NestFactory } from "@nestjs/core";
+import { Injectable, Logger } from "@nestjs/common";
 import { flatMap } from 'lodash';
 import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
 
+@Injectable()
 export class PubsubHandler {
+  private readonly logger = new Logger(PubsubHandler.name);
+
+  constructor(private readonly discoveryService: DiscoveryService) { }
+
   /**
    * Handle messages from firebase lib.
    *
@@ -25,29 +30,20 @@ export class PubsubHandler {
    * @param message - Message from pubsub
    * @param context - EventContext from pubsub
    */
-  static async handle(message: any, context: any, service?: DiscoveryService): Promise<any> {
+  async handle(message: any, context: any): Promise<any> {
     const topicResourceName = context.resource.name.split('/')[3]
 
-    console.info('Incoming message from topic=%s', topicResourceName)
-
-    let discoveryService: DiscoveryService
-
-    if (service) {
-      discoveryService = service
-    } else {
-      const nest = await NestFactory.createApplicationContext(module)
-      discoveryService = nest.get(DiscoveryService)
-    }
+    this.logger.log(`Incoming message from topic=${topicResourceName}`)
 
     const [topicProviders, typeProviders, actionProviders] = await Promise.all([
-      discoveryService.providerMethodsWithMetaAtKey(MESSAGET_TOPIC),
-      discoveryService.providerMethodsWithMetaAtKey(MESSAGE_TYPE),
-      discoveryService.providerMethodsWithMetaAtKey(MESSAGE_ACTION)
+      this.discoveryService.providerMethodsWithMetaAtKey(MESSAGET_TOPIC),
+      this.discoveryService.providerMethodsWithMetaAtKey(MESSAGE_TYPE),
+      this.discoveryService.providerMethodsWithMetaAtKey(MESSAGE_ACTION)
     ])
 
     const handlers = []
 
-    handlers.push(topicProviders.filter(provider => provider.meta === topicResourceName))
+    handlers.push(topicProviders.filter(provider => new RegExp(String(provider.meta)).test(topicResourceName)))
 
     handlers.push(typeProviders.filter(({ meta }) => {
       const [topic, type] = String(meta).split('|')
@@ -65,11 +61,11 @@ export class PubsubHandler {
     const providers = flatMap(handlers)
 
     if (providers.length === 0) {
-      console.info('No handlers found')
+      this.logger.log('No handlers found')
       return Promise.resolve()
     }
 
-    console.info('Invoking handlers=%s', providers.map(h => h.discoveredMethod.parentClass.name))
+    this.logger.log(`Invoking handlers=${providers.map(h => h.discoveredMethod.parentClass.name).toString()}`)
 
     return Promise.all(providers.map(handler => handler.discoveredMethod.handler(message)))
   }
