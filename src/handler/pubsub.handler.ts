@@ -1,9 +1,7 @@
 import { DiscoveryService } from "@golevelup/nestjs-discovery";
 import { NestFactory } from "@nestjs/core";
-import { EventContext } from "firebase-functions";
-import { Message } from "firebase-functions/lib/providers/pubsub";
+import { flatMap } from 'lodash';
 import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
-import {flatMap} from 'lodash'
 
 export class PubsubHandler {
   /**
@@ -27,8 +25,7 @@ export class PubsubHandler {
    * @param message - Message from pubsub
    * @param context - EventContext from pubsub
    */
-  static async handle(message: Message, context: EventContext): Promise<any>
-  static async handle(message: Message, context: EventContext, service?: DiscoveryService): Promise<any> {
+  static async handle(message: any, context: any, service?: DiscoveryService): Promise<any> {
     const topicResourceName = context.resource.name.split('/')[3]
 
     console.info('Incoming message from topic=%s', topicResourceName)
