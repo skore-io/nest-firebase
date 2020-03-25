@@ -1,13 +1,17 @@
-import { DiscoveryService } from "@golevelup/nestjs-discovery";
+import { DiscoveredMethod, DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
 import { Injectable, Logger } from "@nestjs/common";
-import { flatMap } from 'lodash';
+import { ExternalContextCreator } from '@nestjs/core/helpers/external-context-creator';
+import * as flatMap from 'lodash.flatmap';
 import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
 
 @Injectable()
 export class PubsubHandler {
   private readonly logger = new Logger(PubsubHandler.name);
 
-  constructor(private readonly discoveryService: DiscoveryService) { }
+  constructor(
+    private readonly discoveryService: DiscoveryService,
+    private readonly externalContextCreator: ExternalContextCreator
+  ) { }
 
   /**
    * Handle messages from firebase lib.
@@ -41,32 +45,36 @@ export class PubsubHandler {
       this.discoveryService.providerMethodsWithMetaAtKey(MESSAGE_ACTION)
     ])
 
-    const handlers = []
+    const providers = []
 
-    handlers.push(topicProviders.filter(provider => new RegExp(String(provider.meta)).test(topicResourceName)))
+    providers.push(topicProviders.filter(provider => new RegExp(String(provider.meta)).test(topicResourceName)))
 
-    handlers.push(typeProviders.filter(({ meta }) => {
+    providers.push(typeProviders.filter(({ meta }) => {
       const [topic, type] = String(meta).split('|')
       return topicResourceName === topic &&
         new RegExp(type).test(message.attributes.type)
     }))
 
-    handlers.push(actionProviders.filter(({ meta }) => {
+    providers.push(actionProviders.filter(({ meta }) => {
       const [topic, type, action] = String(meta).split('|')
       return topicResourceName === topic &&
         new RegExp(type).test(message.attributes.type) &&
         new RegExp(action).test(message.attributes.action)
     }))
 
-    const providers = flatMap(handlers)
+    const handlers = flatMap(providers)
+      .map((handler: DiscoveredMethodWithMeta<unknown>) => handler.discoveredMethod)
+      .map((discoveredMethod: DiscoveredMethod) => this.externalContextCreator.create(
+        discoveredMethod.parentClass.instance,
+        discoveredMethod.handler,
+        discoveredMethod.methodName
+      ))
 
-    if (providers.length === 0) {
+    if (handlers.length === 0) {
       this.logger.log('No handlers found')
       return Promise.resolve()
     }
 
-    this.logger.log(`Invoking handlers=${providers.map(h => h.discoveredMethod.parentClass.name).toString()}`)
-
-    return Promise.all(providers.map(handler => handler.discoveredMethod.handler(message)))
+    return Promise.all(handlers.map(handler => handler(message, context)))
   }
 }

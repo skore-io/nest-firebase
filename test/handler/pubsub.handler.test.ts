@@ -24,15 +24,33 @@ class SimpleListener {
     expect(message.json.id).toBe('1AgP2VGe5MvX2eBnxxx')
   }
 }
+@Injectable()
+class Dependency {
+  assert() { return 'provided class' }
+}
+@Injectable()
+class WithDependencyListener {
+  constructor(private readonly dependency: Dependency) { }
+  @OnMessage('dependency')
+  onMessage(message: Message) {
+    expect(message.json.id).toBe('dep')
+    expect(this.dependency.assert()).toBe('provided class')
+  }
+}
 
 @Module({
   imports: [NestFirebaseModule],
-  providers: [NeverCalledListener, RegexListener, SimpleListener]
+  providers: [Dependency, NeverCalledListener, RegexListener, SimpleListener, WithDependencyListener]
 })
 class TestModule { }
 
 @suite('[Decorator] On message decorator')
 export class PubsubHandlerTest extends BaseTest {
+  @test('Given message with subscription then invoke WithDependencyListener')
+  async listenerWithDep() {
+    await this.run('dependency', TestModule, { id: 'dep' }, {})
+  }
+
   @test('Given message with subscription then invoke SimpleListener')
   async messageWithListener() {
     await this.run('events', TestModule, { id: '1AgP2VGe5MvX2eBnxxx' }, {})
