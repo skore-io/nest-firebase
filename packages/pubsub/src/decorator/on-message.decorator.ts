@@ -67,9 +67,9 @@ export function OnMessage(filterOptions: FilterOptions) {
     descriptor?: any,
   ) => {
     if (filterOptions.action) {
-      SetMetadata(MESSAGE_ACTION, `${filterOptions.topic}|${filterOptions.type}|${filterOptions.action}`)(target, key, descriptor)
+      SetMetadata(MESSAGE_ACTION, [filterOptions.topic, filterOptions.type, filterOptions.action])(target, key, descriptor)
     } else if (filterOptions.type) {
-      SetMetadata(MESSAGE_TYPE, `${filterOptions.topic}|${filterOptions.type}`)(target, key, descriptor)
+      SetMetadata(MESSAGE_TYPE, [filterOptions.topic, filterOptions.type])(target, key, descriptor)
     } else {
       SetMetadata(MESSAGET_TOPIC, filterOptions.topic)(target, key, descriptor)
     }

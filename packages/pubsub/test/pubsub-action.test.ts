@@ -28,9 +28,17 @@ class RegexTypeAndActionListener {
     expect(message.attributes.action).toBe('reassigned')
   }
 }
+@Injectable()
+class MultipleActionListener {
+  @OnMessage({ topic: 'actions', type: 'io.action.2', action: 'action1|action2' })
+  onMessage(message: Message) {
+    expect(message.attributes.type).toBe('io.action.2')
+    expect(message.attributes.action).toBe('action2')
+  }
+}
 @Module({
   imports: [NestFirebaseModule],
-  providers: [MatchTypeAndActionListener, NeverCalledListener, RegexTypeAndActionListener]
+  providers: [MatchTypeAndActionListener, MultipleActionListener, NeverCalledListener, RegexTypeAndActionListener]
 })
 class TestModule { }
 
@@ -46,6 +54,12 @@ export class PubsubActionHandlerTest extends BaseTest {
   async messageWithRegexListener() {
     const fn = Pubsub.topic('events', TestModule)
     await firebaseFunctionsTest().wrap(fn)({ attributes: { type: 'com.typeform.events.form', action: 'reassigned' } })
+  }
+
+  @test('Given listener with multiple actions then invoke MultipleActionListener')
+  async multipleActionListener() {
+    const fn = Pubsub.topic('actions', TestModule)
+    await firebaseFunctionsTest().wrap(fn)({ attributes: { type: 'io.action.2', action: 'action2' } })
   }
 
   @test('Given message without attributes then no listener called')

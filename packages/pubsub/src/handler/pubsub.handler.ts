@@ -41,13 +41,13 @@ export class PubsubHandler {
 
     if (message.attributes) {
       providers.push(typeProviders.filter(({ meta }) => {
-        const [topic, type] = String(meta).split('|')
+        const [topic, type] = meta as string[]
         return topicResourceName === topic &&
           new RegExp(type).test(message.attributes.type)
       }))
 
       providers.push(actionProviders.filter(({ meta }) => {
-        const [topic, type, action] = String(meta).split('|')
+        const [topic, type, action] = meta as string[]
         return topicResourceName === topic &&
           new RegExp(type).test(message.attributes.type) &&
           new RegExp(action).test(message.attributes.action)
