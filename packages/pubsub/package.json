@@ -1,8 +1,8 @@
 {
-  "author": "",
+  "author": "Skore",
   "license": "ISC",
-  "name": "pubsub",
-  "version": "1.0.1",
+  "name": "@skoreio/pubsub",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "directories": {
