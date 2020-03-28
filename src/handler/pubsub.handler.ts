@@ -16,20 +16,10 @@ export class PubsubHandler {
   /**
    * Handle messages from firebase lib.
    *
-   * Receives messages from pubsub through firebase lib and create a nest
-   * application ctx
-   *
-   * Fetch all providers with decorators: `@OnMessage()` and filter messages
+   * Fetch all providers with decorator: `@OnMessage()` and filter messages
    * according decorator specification
    *
    * Invokes all providers at same time promisifying all of them
-   *
-   * How to use:
-   *
-   * In your index.ts file:
-   * ```typescript
-   * export const onMessage = pubsub.topic('events').handler(PubsubHandler.handle)
-   * ```
    *
    * @param message - Message from pubsub
    * @param context - EventContext from pubsub
@@ -49,18 +39,20 @@ export class PubsubHandler {
 
     providers.push(topicProviders.filter(provider => new RegExp(String(provider.meta)).test(topicResourceName)))
 
-    providers.push(typeProviders.filter(({ meta }) => {
-      const [topic, type] = String(meta).split('|')
-      return topicResourceName === topic &&
-        new RegExp(type).test(message.attributes.type)
-    }))
+    if (message.attributes) {
+      providers.push(typeProviders.filter(({ meta }) => {
+        const [topic, type] = String(meta).split('|')
+        return topicResourceName === topic &&
+          new RegExp(type).test(message.attributes.type)
+      }))
 
-    providers.push(actionProviders.filter(({ meta }) => {
-      const [topic, type, action] = String(meta).split('|')
-      return topicResourceName === topic &&
-        new RegExp(type).test(message.attributes.type) &&
-        new RegExp(action).test(message.attributes.action)
-    }))
+      providers.push(actionProviders.filter(({ meta }) => {
+        const [topic, type, action] = String(meta).split('|')
+        return topicResourceName === topic &&
+          new RegExp(type).test(message.attributes.type) &&
+          new RegExp(action).test(message.attributes.action)
+      }))
+    }
 
     const handlers = flatMap(providers)
       .map((handler: DiscoveredMethodWithMeta<unknown>) => handler.discoveredMethod)

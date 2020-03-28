@@ -10,7 +10,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "test": "jest --coverage"
+    "test": "FIREBASE_CONFIG=some-config GCLOUD_PROJECT=some-project jest --coverage"
   },
   "dependencies": {
     "@golevelup/nestjs-discovery": "^2.2.3",

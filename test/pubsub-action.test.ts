@@ -1,9 +1,11 @@
 import { Injectable, Module } from '@nestjs/common'
 import { suite, test } from '@testdeck/jest'
+import * as firebaseFunctionsTest from 'firebase-functions-test'
 import { Message } from 'firebase-functions/lib/providers/pubsub'
-import { NestFirebaseModule } from '../../src'
-import { OnMessage } from '../../src/decorator'
-import { BaseTest } from '../base-test'
+import { NestFirebaseModule } from '../src'
+import { OnMessage } from '../src/decorator'
+import { Pubsub } from '../src/pubsub'
+import { BaseTest } from './base-test'
 
 @Injectable()
 class MatchTypeAndActionListener {
@@ -36,17 +38,20 @@ class TestModule { }
 export class PubsubActionHandlerTest extends BaseTest {
   @test('Given message with subscription, type and action then invoke MatchTypeAndActionListener')
   async messageWithListener() {
-    await this.run('events', TestModule, {}, { type: 'io.skore.events.user', action: 'created' })
+    const fn = Pubsub.topic('events', TestModule)
+    await firebaseFunctionsTest().wrap(fn)({ attributes: { type: 'io.skore.events.user', action: 'created' } })
   }
 
   @test('Given message with subscription type using regex then invoke ListenerWithRegexType')
   async messageWithRegexListener() {
-    await this.run('events', TestModule, {}, { type: 'com.typeform.events.form', action: 'reassigned' })
+    const fn = Pubsub.topic('events', TestModule)
+    await firebaseFunctionsTest().wrap(fn)({ attributes: { type: 'com.typeform.events.form', action: 'reassigned' } })
   }
 
-  @test('Given message with type not expected then no listener called')
+  @test('Given message without attributes then no listener called')
   async messageWithoutListener() {
-    await this.run('never', TestModule, {}, { type: 'call', action: 'that' })
+    const fn = Pubsub.topic('never', TestModule)
+    await firebaseFunctionsTest().wrap(fn)({})
     expect(true).toBeTruthy()
   }
 }
