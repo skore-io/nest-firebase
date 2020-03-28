@@ -5,8 +5,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "directories": {
+    "dist": "dist",
     "test": "test"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "prebuild": "rimraf dist",
