@@ -7,19 +7,19 @@ import { BaseTest } from '../base-test'
 
 @Injectable()
 class MatchTypeListener {
-  @OnMessage('events', 'io.skore.events.user')
+  @OnMessage({ topic: 'events', type: 'io.skore.events.user' })
   onMessage(message: Message) {
     expect(message.attributes.type).toBe('io.skore.events.user')
   }
 }
 @Injectable()
 class NeverCalledListener {
-  @OnMessage('never', 'io.skore.events.user')
+  @OnMessage({ topic: 'never', type: 'io.skore.events.user' })
   onMessage() { expect(false).toBeTruthy() }
 }
 @Injectable()
 class RegexTypeListener {
-  @OnMessage('events', 'com.typeform.*')
+  @OnMessage({ topic: 'events', type: 'com.typeform.*' })
   onMessage(message: Message) {
     expect(message.attributes.type).toBe('com.typeform.events.form')
   }

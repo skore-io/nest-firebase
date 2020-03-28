@@ -7,19 +7,19 @@ import { BaseTest } from '../base-test'
 
 @Injectable()
 class NeverCalledListener {
-  @OnMessage('eventss')
+  @OnMessage({ topic: 'eventss'})
   onMessage() { expect(false).toBeTruthy() }
 }
 @Injectable()
 class RegexListener {
-  @OnMessage('regex-*')
+  @OnMessage({ topic: 'regex-*'})
   onMessage(message: Message) {
     expect(message.json.id).toBe('regex-type')
   }
 }
 @Injectable()
 class SimpleListener {
-  @OnMessage('events')
+  @OnMessage({ topic: 'events'})
   onMessage(message: Message) {
     expect(message.json.id).toBe('1AgP2VGe5MvX2eBnxxx')
   }
@@ -31,7 +31,7 @@ class Dependency {
 @Injectable()
 class WithDependencyListener {
   constructor(private readonly dependency: Dependency) { }
-  @OnMessage('dependency')
+  @OnMessage({ topic: 'dependency'})
   onMessage(message: Message) {
     expect(message.json.id).toBe('dep')
     expect(this.dependency.assert()).toBe('provided class')

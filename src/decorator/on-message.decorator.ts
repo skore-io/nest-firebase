@@ -1,6 +1,24 @@
 import { SetMetadata } from "@nestjs/common";
 import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
 
+export type FilterOptions = {
+  /**
+   * Specificy pubsub topic name
+   * **accepts regex**
+   */
+  topic: string,
+  /**
+   * Specificy string expected in message.attributes.type
+   * **accepts regex**
+   */
+  type?: string,
+  /**
+   * Specificy string expected in message.attributes.action
+   * **accepts regex**
+   */
+  action?: string
+}
+
 /**
  * Decorator that marks a provider method as listener of pubsub messages
  *
@@ -11,7 +29,7 @@ import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
  *  @Injectable()
  *  export class TopicListener {
  *
- *    @OnMessage('events')
+ *    @OnMessage({ topic: 'events' })
  *    onMessage(message: Message): Promise<void> { }
  *  }
  * ```
@@ -21,7 +39,7 @@ import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
  *  @Injectable()
  *  export class TopicAndMessageTypeListener {
  *
- *    @OnMessage('events', 'io.skore.events.user')
+ *    @OnMessage({ topic: 'events', type: 'io.skore.events.user' })
  *    onMessage(message: Message): Promise<void> { }
  *  }
  * ```
@@ -31,7 +49,7 @@ import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
  *  @Injectable()
  *  export class TopicAndMessageTypeListener {
  *
- *    @OnMessage('events', 'io.skore.events.user', 'created')
+ *    @OnMessage({ topic: 'events', type: 'io.skore.events.user', action: 'created' })
  *    onMessage(message: Message): Promise<void> { }
  *  }
  * ```
@@ -42,18 +60,18 @@ import { MESSAGET_TOPIC, MESSAGE_ACTION, MESSAGE_TYPE } from "../constants";
  * @param type - message.attributes.type
  * @param action - message.attributes.action
  */
-export function OnMessage(topic: string, type?: string, action?: string) {
+export function OnMessage(filterOptions: FilterOptions) {
   return (
     target: Record<string, any> | Function,
     key?: string,
     descriptor?: any,
   ) => {
-    if (action) {
-      SetMetadata(MESSAGE_ACTION, `${topic}|${type}|${action}`)(target, key, descriptor)
-    } else if (type) {
-      SetMetadata(MESSAGE_TYPE, `${topic}|${type}`)(target, key, descriptor)
+    if (filterOptions.action) {
+      SetMetadata(MESSAGE_ACTION, `${filterOptions.topic}|${filterOptions.type}|${filterOptions.action}`)(target, key, descriptor)
+    } else if (filterOptions.type) {
+      SetMetadata(MESSAGE_TYPE, `${filterOptions.topic}|${filterOptions.type}`)(target, key, descriptor)
     } else {
-      SetMetadata(MESSAGET_TOPIC, topic)(target, key, descriptor)
+      SetMetadata(MESSAGET_TOPIC, filterOptions.topic)(target, key, descriptor)
     }
   }
 }

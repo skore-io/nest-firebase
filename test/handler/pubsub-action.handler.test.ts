@@ -7,7 +7,7 @@ import { BaseTest } from '../base-test'
 
 @Injectable()
 class MatchTypeAndActionListener {
-  @OnMessage('events', 'io.skore.events.user', 'created')
+  @OnMessage({ topic: 'events', type: 'io.skore.events.user', action: 'created' })
   onMessage(message: Message) {
     expect(message.attributes.type).toBe('io.skore.events.user')
     expect(message.attributes.action).toBe('created')
@@ -15,12 +15,12 @@ class MatchTypeAndActionListener {
 }
 @Injectable()
 class NeverCalledListener {
-  @OnMessage('never', 'call', 'this')
+  @OnMessage({ topic: 'never', type: 'call', action: 'this' })
   onMessage() { expect(true).toBeFalsy() }
 }
 @Injectable()
 class RegexTypeAndActionListener {
-  @OnMessage('events', 'com.typeform.*', '.*assign')
+  @OnMessage({ topic: 'events', type: 'com.typeform.*', action: '.*assign' })
   onMessage(message: Message) {
     expect(message.attributes.type).toBe('com.typeform.events.form')
     expect(message.attributes.action).toBe('reassigned')
