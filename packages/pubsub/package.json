@@ -1,0 +1,47 @@
+{
+  "author": "",
+  "license": "ISC",
+  "name": "pubsub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "test": "FIREBASE_CONFIG=some-config GCLOUD_PROJECT=some-project jest --coverage"
+  },
+  "dependencies": {
+    "@golevelup/nestjs-discovery": "^2.2.3",
+    "lodash.flatmap": "^4.5.0"
+  },
+  "jest": {
+    "rootDir": ".",
+    "preset": "ts-jest",
+    "testMatch": [
+      "<rootDir>/test/**/*.test.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/{!(app.module|index),}.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    },
+    "coverageReporters": [
+      "json",
+      "lcovonly",
+      "text",
+      "clover"
+    ]
+  }
+}
