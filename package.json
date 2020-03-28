@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
+    "prepublish": "npm run build",
     "publish": "lerna publish",
     "setup": "npm i && lerna bootstrap",
     "test": "lerna run test"
