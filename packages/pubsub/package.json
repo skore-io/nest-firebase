@@ -2,7 +2,7 @@
   "author": "Skore IO",
   "license": "ISC",
   "name": "@nest-firebase/pubsub",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
