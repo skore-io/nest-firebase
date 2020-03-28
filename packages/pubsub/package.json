@@ -1,7 +1,7 @@
 {
-  "author": "Skore",
+  "author": "Skore IO",
   "license": "ISC",
-  "name": "@skoreio/pubsub",
+  "name": "@nest-firebase/pubsub",
   "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
