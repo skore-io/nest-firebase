@@ -1,7 +1,6 @@
 {
   "name": "root",
   "author": "Skore",
-  "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "build": "lerna run build",

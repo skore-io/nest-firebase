@@ -2,7 +2,7 @@ import { Injectable, Module } from '@nestjs/common'
 import { suite, test } from '@testdeck/jest'
 import * as firebaseFunctionsTest from 'firebase-functions-test'
 import { Message } from 'firebase-functions/lib/providers/pubsub'
-import { NestFirebaseModule } from '../src'
+import { PubsubModule } from '../src'
 import { OnMessage } from '../src/decorator'
 import { Pubsub } from '../src/pubsub'
 import { BaseTest } from './base-test'
@@ -41,7 +41,7 @@ class WithDependencyListener {
 }
 
 @Module({
-  imports: [NestFirebaseModule],
+  imports: [PubsubModule],
   providers: [Dependency, NeverCalledListener, RegexListener, SimpleListener, WithDependencyListener]
 })
 class TestModule { }

@@ -7,4 +7,4 @@ import { PubsubHandler } from './handler';
   imports: [DiscoveryModule],
   providers: [PubsubHandler]
 })
-export class NestFirebaseModule {}
+export class PubsubModule {}
