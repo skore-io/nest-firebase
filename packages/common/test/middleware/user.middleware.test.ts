@@ -11,7 +11,7 @@ class NeverCalledController {
   neverCalled() { expect(false).toBeTruthy() }
 }
 @Controller('')
-class CalledListener {
+class CalledController {
   @Get() @HttpCode(200)
   neverCalled(@Req() req:any) { expect(req.user.id).toBe('10') }
 }
@@ -20,7 +20,7 @@ class CalledListener {
     HttpModule,
     ConfigModule.forRoot({envFilePath: 'test/.env'})
   ],
-  controllers: [CalledListener, NeverCalledController]
+  controllers: [CalledController, NeverCalledController]
 })
 class TestModule implements NestModule {
   configure(consumer: MiddlewareConsumer) { consumer.apply(UserMiddleware).forRoutes('*') }
