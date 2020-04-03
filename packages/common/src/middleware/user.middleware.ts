@@ -23,7 +23,7 @@ import { ConfigService } from '@nestjs/config'
  * }
  * ```
  *
- * Make sure that in your `.env` file has `USER_AUTH_URL`
+ * Make sure that in your `.env` file has `USER_MIDDLEWARE_AUTH_URL`
  * configured
  */
 @Injectable()
@@ -38,7 +38,7 @@ export class UserMiddleware implements NestMiddleware {
       throw new UnauthorizedException()
     }
 
-    const userAuthUrl = this.configService.get('USER_AUTH_URL')
+    const userAuthUrl = this.configService.get('USER_MIDDLEWARE_AUTH_URL')
 
     if (!userAuthUrl) {
       console.error('No authentication provider url')
@@ -46,7 +46,7 @@ export class UserMiddleware implements NestMiddleware {
     }
 
     try {
-      const user = await this.httpService.get(this.configService.get('USER_AUTH_URL'), {
+      const user = await this.httpService.get(this.configService.get('USER_MIDDLEWARE_AUTH_URL'), {
         headers: {
           Authorization: authorization,
         },
