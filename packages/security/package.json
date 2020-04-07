@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "description": "",
   "author": "Skore",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -71,5 +71,6 @@
       "text",
       "clover"
     ]
-  }
+  },
+  "gitHead": "5f833d4f129de399d98512c3262779518575046e"
 }
