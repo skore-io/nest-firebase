@@ -4,6 +4,23 @@
   "description": "",
   "author": "Skore",
   "license": "MIT",
+  "homepage": "https://github.com/skore-io/nest-firebase/blob/master/packages/security/README.md",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "directories": {
+    "dist": "dist",
+    "test": "test"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skore-io/nest-firebase.git"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -72,5 +89,5 @@
       "clover"
     ]
   },
-  "gitHead": "5f833d4f129de399d98512c3262779518575046e"
+  "gitHead": "eb95c4de74fe642e9dffb0276bf0a3775faf114c"
 }
