@@ -4,17 +4,21 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-http-bearer'
 
 @Injectable()
 export class UserGuard extends PassportStrategy(Strategy, 'user') {
-  constructor(private readonly httpService: HttpService) {
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) {
     super()
   }
 
   async validate(token: string) {
-    const userAuthUrl = process.env.USER_AUTH_URL
+    const userAuthUrl = this.configService.get('USER_AUTH_URL')
 
     if (!userAuthUrl) {
       console.error('No authentication provider url')
