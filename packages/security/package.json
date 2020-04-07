@@ -2,8 +2,7 @@
   "name": "@nest-firebase/security",
   "version": "1.0.0",
   "description": "",
-  "author": "",
-  "private": true,
+  "author": "Skore",
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
