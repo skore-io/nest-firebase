@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.3](https://github.com/skore-io/nest-firebase/compare/v1.4.2...v1.4.3) (2020-04-07)
+
+
+### Bug Fixes
+
+* **npm:** add access public to package ([a12fa0a](https://github.com/skore-io/nest-firebase/commit/a12fa0ace06705b2b6039f6ff22e4421d648a06b))
+
+
+
+
+
 ## [1.4.2](https://github.com/skore-io/nest-firebase/compare/v1.4.1...v1.4.2) (2020-04-07)
 
 **Note:** Version bump only for package root
