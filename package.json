@@ -25,9 +25,8 @@
     "@types/node": "^13.9.1",
     "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
-    "@typescript-eslint/parser": "^2.23.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-airbnb-typescript": "^7.2.0",
     "eslint-plugin-import": "^2.20.1",
     "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.5.0",
@@ -41,6 +40,7 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
+    "tslint": "^6.1.1",
     "typescript": "^3.7.4"
   }
 }
