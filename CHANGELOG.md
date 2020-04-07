@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/skore-io/nest-firebase/compare/v1.4.0...v1.4.1) (2020-04-07)
+
+
+### Bug Fixes
+
+* **npm:** add license ([e3f29c2](https://github.com/skore-io/nest-firebase/commit/e3f29c28f55026a159f565cb46f4457f8996a84c))
+
+
+
+
+
 # [1.4.0](https://github.com/skore-io/nest-firebase/compare/v1.3.0...v1.4.0) (2020-04-07)
 
 

@@ -5,7 +5,7 @@
   },
   "license": "MIT",
   "name": "@nest-firebase/pubsub",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "",
   "homepage": "https://github.com/skore-io/nest-firebase/blob/master/packages/pubsub/README.md",
   "main": "dist/index.js",
