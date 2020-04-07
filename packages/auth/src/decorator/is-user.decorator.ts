@@ -2,5 +2,5 @@ import { UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 
 export function IsUser() {
-  return UseGuards(AuthGuard('bearer'))
+  return UseGuards(AuthGuard('user'))
 }

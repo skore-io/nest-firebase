@@ -6,11 +6,11 @@ import {
   HttpStatus,
   Module,
 } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config'
 import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
 import * as request from 'supertest'
-import { CurrentUser, IsUser, BearerGuard } from '../../src'
+import { CurrentUser, IsUser, UserGuard } from '../../src'
 
 @Controller()
 class AuthedController {
@@ -23,12 +23,12 @@ class AuthedController {
 @Module({
   imports: [ConfigModule.forRoot({ envFilePath: 'test/.env' }), HttpModule],
   controllers: [AuthedController],
-  providers: [BearerGuard],
+  providers: [UserGuard],
 })
 class TestModule {}
 
-@suite('[Guard] Bearer Guard')
-export class BearerGuardTest {
+@suite('[Guard] User Guard')
+export class UserGuardTest {
   private server: any
 
   async before() {

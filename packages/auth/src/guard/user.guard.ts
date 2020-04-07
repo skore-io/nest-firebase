@@ -8,7 +8,7 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-http-bearer'
 
 @Injectable()
-export class BearerGuard extends PassportStrategy(Strategy) {
+export class UserGuard extends PassportStrategy(Strategy, 'user') {
   constructor(private readonly httpService: HttpService) {
     super()
   }
