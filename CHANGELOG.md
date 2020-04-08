@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.4](https://github.com/skore-io/nest-firebase/compare/v1.4.3...v1.4.4) (2020-04-08)
+
+
+### Bug Fixes
+
+* **security:** id token audience ([933b2a6](https://github.com/skore-io/nest-firebase/commit/933b2a61aeccf1094b7e6310122de5648c374aa9))
+
+
+
+
+
 ## [1.4.3](https://github.com/skore-io/nest-firebase/compare/v1.4.2...v1.4.3) (2020-04-07)
 
 
