@@ -68,6 +68,7 @@
     "testMatch": [
       "<rootDir>/test/**/*.test.ts"
     ],
+    "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],

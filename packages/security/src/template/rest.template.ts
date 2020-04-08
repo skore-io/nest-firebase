@@ -10,52 +10,64 @@ export class RestTemplate {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async delete(url: string, config: AxiosRequestConfig = {}) {
+  async delete(url: string, config: AxiosRequestConfig = { headers: {} }) {
     const token = await this.fetchToken(url)
 
     Object.assign(config.headers, { Authorization: `Bearer ${token}` })
 
-    return this.httpService.delete(url, config)
+    return this.httpService.delete(url, config).toPromise()
   }
 
-  async get(url: string, config: AxiosRequestConfig = {}) {
+  async get(url: string, config: AxiosRequestConfig = { headers: {} }) {
     const token = await this.fetchToken(url)
 
     Object.assign(config.headers, { Authorization: `Bearer ${token}` })
 
-    return this.httpService.get(url, config)
+    return this.httpService.get(url, config).toPromise()
   }
 
-  async patch(url: string, data?: any, config: AxiosRequestConfig = {}) {
+  async patch(
+    url: string,
+    data?: any,
+    config: AxiosRequestConfig = { headers: {} },
+  ) {
     const token = await this.fetchToken(url)
 
     Object.assign(config.headers, { Authorization: `Bearer ${token}` })
 
-    return this.httpService.patch(url, data, config)
+    return this.httpService.patch(url, data, config).toPromise()
   }
 
-  async post(url: string, data?: any, config: AxiosRequestConfig = {}) {
+  async post(
+    url: string,
+    data?: any,
+    config: AxiosRequestConfig = { headers: {} },
+  ) {
     const token = await this.fetchToken(url)
 
     Object.assign(config.headers, { Authorization: `Bearer ${token}` })
 
-    return this.httpService.post(url, data, config)
+    return this.httpService.post(url, data, config).toPromise()
   }
 
-  async put(url: string, data?: any, config: AxiosRequestConfig = {}) {
+  async put(
+    url: string,
+    data?: any,
+    config: AxiosRequestConfig = { headers: {} },
+  ) {
     const token = await this.fetchToken(url)
 
     Object.assign(config.headers, { Authorization: `Bearer ${token}` })
 
-    return this.httpService.put(url, data, config)
+    return this.httpService.put(url, data, config).toPromise()
   }
 
   @MemoryCache({ ttl: RestTemplate.THIRTY_MINUTES_IN_SECONDS })
   async fetchToken(url: string) {
     const client = (await new GoogleAuth().getClient()) as JWT | Compute
 
-    const audience = parse(url).href
+    const { protocol, host } = parse(url)
 
-    return client.fetchIdToken(audience)
+    return client.fetchIdToken(`${protocol}//${host}`)
   }
 }
