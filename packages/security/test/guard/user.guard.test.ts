@@ -16,7 +16,7 @@ export class UserGuardTest {
           toPromise: () => {
             if (params.headers.Authorization !== 'SHOULD_ASSERT_OK')
               throw new Error('Invalid token')
-            return { data: { id: 1 } }
+            return Promise.resolve({ data: { id: 1 } })
           },
         }),
       })
@@ -49,23 +49,6 @@ export class UserGuardTest {
       .auth('SHOULD_ASSERT_OK', { type: 'bearer' })
       .expect(HttpStatus.OK)
     expect(response.body.id).toBe(1)
-  }
-
-  @test('Given valid token on graphql query then return 200')
-  async invocationWithValidTokenOnGraphql() {
-    const {
-      body: {
-        data: { user },
-      },
-    } = await request(this.server)
-      .post('/graphql')
-      .send({
-        query: `{ user { id } }`,
-      })
-      .auth('SHOULD_ASSERT_OK', { type: 'bearer' })
-      .expect(HttpStatus.OK)
-
-    expect(user.id).toBe('1')
   }
 
   @test('Given module without user auth provider url the return 500')
