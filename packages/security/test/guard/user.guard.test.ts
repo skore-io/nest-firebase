@@ -1,31 +1,8 @@
-import {
-  Controller,
-  Get,
-  HttpModule,
-  HttpService,
-  HttpStatus,
-  Module,
-} from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { HttpService, HttpStatus } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
 import * as request from 'supertest'
-import { CurrentUser, IsUser, UserGuard } from '../../src'
-
-@Controller()
-class AuthedController {
-  @Get()
-  @IsUser()
-  auth(@CurrentUser() user: any) {
-    return user
-  }
-}
-@Module({
-  imports: [ConfigModule.forRoot({ envFilePath: 'test/.env' }), HttpModule],
-  controllers: [AuthedController],
-  providers: [UserGuard],
-})
-class TestModule {}
+import { TestModule } from './test.module'
 
 @suite('[Guard] User Guard')
 export class UserGuardTest {
@@ -53,14 +30,14 @@ export class UserGuardTest {
   @test('Given no token provided then return 401')
   async invocationWithoutToken() {
     return request(this.server)
-      .get('/')
+      .get('/user')
       .expect(HttpStatus.UNAUTHORIZED)
   }
 
   @test('Given invalid token then return 401')
   async invocationWithInvalidToken() {
     return request(this.server)
-      .get('/')
+      .get('/user')
       .auth('invalid', { type: 'bearer' })
       .expect(HttpStatus.UNAUTHORIZED)
   }
@@ -68,7 +45,7 @@ export class UserGuardTest {
   @test('Given valid token then return 200')
   async invocationWithValidToken() {
     const response = await request(this.server)
-      .get('/')
+      .get('/user')
       .auth('SHOULD_ASSERT_OK', { type: 'bearer' })
       .expect(HttpStatus.OK)
     expect(response.body.id).toBe(1)
@@ -79,7 +56,7 @@ export class UserGuardTest {
     delete process.env.USER_AUTH_URL
 
     return request(this.server)
-      .get('/')
+      .get('/user')
       .auth('SHOULD_ASSERT_OK', { type: 'bearer' })
       .expect(HttpStatus.INTERNAL_SERVER_ERROR)
   }

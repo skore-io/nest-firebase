@@ -1,35 +1,10 @@
-import {
-  Controller,
-  Get,
-  HttpModule,
-  HttpStatus,
-  Module,
-  Request,
-} from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { HttpStatus } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
 import { OAuth2Client } from 'google-auth-library'
 import * as request from 'supertest'
-import { ClientGuard, IsClient } from '../../src'
-
-@Controller()
-class AuthedController {
-  @Get()
-  @IsClient()
-  auth(@Request() req: any) {
-    return req.user
-  }
-}
-@Module({
-  imports: [ConfigModule.forRoot({ envFilePath: 'test/.env' }), HttpModule],
-  controllers: [AuthedController],
-  providers: [
-    ClientGuard,
-    { provide: OAuth2Client, useFactory: () => new OAuth2Client() },
-  ],
-})
-class TestModule {}
+import { TestModule } from './test.module'
 
 @suite('[Guard] User Guard')
 export class UserGuardTest {
@@ -63,14 +38,14 @@ export class UserGuardTest {
   @test('Given no token provided then return 401')
   invocationWithoutToken() {
     return request(this.server)
-      .get('/')
+      .get('/client')
       .expect(HttpStatus.UNAUTHORIZED)
   }
 
   @test('Given invalid token then return 401')
   invocationWithInvalidToken() {
     return request(this.server)
-      .get('/')
+      .get('/client')
       .auth('invalid', { type: 'bearer' })
       .expect(HttpStatus.UNAUTHORIZED)
   }
@@ -78,7 +53,7 @@ export class UserGuardTest {
   @test('Given valid token then return 200')
   invocationWithValidToken() {
     return request(this.server)
-      .get('/')
+      .get('/client')
       .auth('VALID_PROJECT', { type: 'bearer' })
       .expect(HttpStatus.OK)
   }
@@ -93,7 +68,7 @@ export class UserGuardTest {
     const app = await module.createNestApplication().init()
 
     return request(app.getHttpServer())
-      .get('/')
+      .get('/client')
       .auth('VALID_PROJECT', { type: 'bearer' })
       .expect(HttpStatus.INTERNAL_SERVER_ERROR)
   }
@@ -101,7 +76,7 @@ export class UserGuardTest {
   @test('Given unlisted project id then return unauthorized')
   invalidProjectId() {
     return request(this.server)
-      .get('/')
+      .get('/client')
       .auth('INVALID_PROJECT', { type: 'bearer' })
       .expect(HttpStatus.UNAUTHORIZED)
   }
