@@ -62,6 +62,21 @@ export class RestTemplate {
     return this.httpService.put(url, data, config).toPromise()
   }
 
+  async graphql(url: string, query: string, variables?: any) {
+    const token = await this.fetchToken(url)
+
+    return this.httpService
+      .post(url, {
+        query,
+        variables,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .toPromise()
+  }
+
   @MemoryCache({ ttl: RestTemplate.THIRTY_MINUTES_IN_SECONDS })
   async fetchToken(url: string) {
     const client = (await new GoogleAuth().getClient()) as JWT | Compute

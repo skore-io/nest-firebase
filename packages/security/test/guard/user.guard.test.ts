@@ -51,6 +51,23 @@ export class UserGuardTest {
     expect(response.body.id).toBe(1)
   }
 
+  @test('Given valid token on graphql query then return 200')
+  async invocationWithValidTokenOnGraphql() {
+    const {
+      body: {
+        data: { user },
+      },
+    } = await request(this.server)
+      .post('/graphql')
+      .send({
+        query: `{ user { id } }`,
+      })
+      .auth('SHOULD_ASSERT_OK', { type: 'bearer' })
+      .expect(HttpStatus.OK)
+
+    expect(user.id).toBe('1')
+  }
+
   @test('Given module without user auth provider url the return 500')
   async moduleMisconfigured() {
     delete process.env.USER_AUTH_URL
