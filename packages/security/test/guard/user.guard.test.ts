@@ -1,4 +1,5 @@
 import { HttpService, HttpStatus } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
 import * as request from 'supertest'
@@ -27,19 +28,19 @@ export class UserGuardTest {
     this.server = app.getHttpServer()
   }
 
-  @test('Given no token provided then return 401')
-  async invocationWithoutToken() {
+  @test('Given no token provided then return 403')
+  invocationWithoutToken() {
     return request(this.server)
       .get('/user')
-      .expect(HttpStatus.UNAUTHORIZED)
+      .expect(HttpStatus.FORBIDDEN)
   }
 
-  @test('Given invalid token then return 401')
-  async invocationWithInvalidToken() {
+  @test('Given invalid token then return 403')
+  invocationWithInvalidToken() {
     return request(this.server)
       .get('/user')
       .auth('invalid', { type: 'bearer' })
-      .expect(HttpStatus.UNAUTHORIZED)
+      .expect(HttpStatus.FORBIDDEN)
   }
 
   @test('Given valid token then return 200')
@@ -51,13 +52,26 @@ export class UserGuardTest {
     expect(response.body.id).toBe(1)
   }
 
-  @test('Given module without user auth provider url the return 500')
-  async moduleMisconfigured() {
-    delete process.env.USER_AUTH_URL
-
+  @test('Given token sent without bearer then return 403')
+  noBearerToken() {
     return request(this.server)
       .get('/user')
+      .set('Authorization', 'SHOULD_ASSERT_OK')
+      .expect(HttpStatus.FORBIDDEN)
+  }
+
+  @test('Given module without user auth provider url the return 403')
+  async moduleMisconfigured() {
+    const module = await Test.createTestingModule({ imports: [TestModule] })
+      .overrideProvider(ConfigService)
+      .useValue({ get: (path: string) => null })
+      .compile()
+
+    const app = await module.createNestApplication().init()
+
+    return request(app.getHttpServer())
+      .get('/user')
       .auth('SHOULD_ASSERT_OK', { type: 'bearer' })
-      .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+      .expect(HttpStatus.FORBIDDEN)
   }
 }
