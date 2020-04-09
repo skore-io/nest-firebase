@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/skore-io/nest-firebase/compare/v1.4.4...v1.5.0) (2020-04-09)
+
+
+### Bug Fixes
+
+* **deps:** downgrade graphql version ([26672f8](https://github.com/skore-io/nest-firebase/commit/26672f8e578c8d33267ab82fe97466a8abc356bb))
+
+
+### Features
+
+* **graphql:** graphql guard ([b802c14](https://github.com/skore-io/nest-firebase/commit/b802c14902c8199e3b8c1baafbfd488b5b488935))
+
+
+
+
+
 ## [1.4.4](https://github.com/skore-io/nest-firebase/compare/v1.4.3...v1.4.4) (2020-04-08)
 
 
