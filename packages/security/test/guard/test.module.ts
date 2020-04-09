@@ -45,7 +45,7 @@ class User {
 @Resolver()
 export class UserResolver {
   @Query(() => User)
-  @IsUser(true)
+  @IsUser({ graphql: true })
   user(@CurrentUser({ graphql: true }) user: any) {
     return new User(user.id)
   }

@@ -35,19 +35,19 @@ export class UserGuardTest {
     this.server = app.getHttpServer()
   }
 
-  @test('Given no token provided then return 401')
+  @test('Given no token provided then return 403')
   invocationWithoutToken() {
     return request(this.server)
       .get('/client')
-      .expect(HttpStatus.UNAUTHORIZED)
+      .expect(HttpStatus.FORBIDDEN)
   }
 
-  @test('Given invalid token then return 401')
+  @test('Given invalid token then return 403')
   invocationWithInvalidToken() {
     return request(this.server)
       .get('/client')
       .auth('invalid', { type: 'bearer' })
-      .expect(HttpStatus.UNAUTHORIZED)
+      .expect(HttpStatus.FORBIDDEN)
   }
 
   @test('Given valid token then return 200')
@@ -58,7 +58,7 @@ export class UserGuardTest {
       .expect(HttpStatus.OK)
   }
 
-  @test('Given module without user auth provider url the return 500')
+  @test('Given module without user auth provider url the return 403')
   async moduleMisconfigured() {
     const module = await Test.createTestingModule({ imports: [TestModule] })
       .overrideProvider(ConfigService)
@@ -70,14 +70,14 @@ export class UserGuardTest {
     return request(app.getHttpServer())
       .get('/client')
       .auth('VALID_PROJECT', { type: 'bearer' })
-      .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+      .expect(HttpStatus.FORBIDDEN)
   }
 
-  @test('Given unlisted project id then return unauthorized')
+  @test('Given unlisted project id then return 403')
   invalidProjectId() {
     return request(this.server)
       .get('/client')
       .auth('INVALID_PROJECT', { type: 'bearer' })
-      .expect(HttpStatus.UNAUTHORIZED)
+      .expect(HttpStatus.FORBIDDEN)
   }
 }

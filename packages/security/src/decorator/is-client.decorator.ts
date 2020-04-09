@@ -1,6 +1,6 @@
 import { UseGuards } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
+import { ClientGuard } from "../guard";
 
 export function IsClient() {
-  return UseGuards(AuthGuard('client'))
+  return UseGuards(ClientGuard)
 }

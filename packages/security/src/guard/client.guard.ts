@@ -1,15 +1,10 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  UnauthorizedException,
-} from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { PassportStrategy } from '@nestjs/passport'
 import { OAuth2Client } from 'google-auth-library'
-import { Strategy } from 'passport-http-bearer'
+import { Guard } from './guard'
 
 @Injectable()
-export class ClientGuard extends PassportStrategy(Strategy, 'client') {
+export class ClientGuard extends Guard {
   constructor(
     private readonly authClient: OAuth2Client,
     private readonly configService: ConfigService,
@@ -17,35 +12,23 @@ export class ClientGuard extends PassportStrategy(Strategy, 'client') {
     super()
   }
 
-  async validate(token: string) {
-    const audience = this.configService.get('OAUTH_AUDIENCE')
+  async authorizeToken(token: string) {
+    const ticket = await this.authClient.verifyIdToken({
+      idToken: token,
+      audience: this.configService.get('OAUTH_AUDIENCE'),
+    })
 
-    if (!audience) {
-      console.error('No audience provided')
-      throw new InternalServerErrorException()
-    }
+    const payload = ticket.getPayload()
 
-    try {
-      const ticket = await this.authClient.verifyIdToken({
-        idToken: token,
-        audience,
-      })
-
-      const payload = ticket.getPayload()
-
-      if (!payload.email_verified || !this.isAllowedProject(payload.email)) {
-        console.error('Service account %o not allowed', payload)
-        throw new UnauthorizedException()
-      }
-
-      return payload
-    } catch (error) {
-      console.error('Error authenticating client', error.message)
+    if (!payload.email_verified || !this.projectAllowed(payload.email)) {
+      console.error('Service account %o not allowed', payload)
       throw new UnauthorizedException()
     }
+
+    return payload
   }
 
-  private isAllowedProject(email: string) {
+  private projectAllowed(email: string) {
     const domain = email.split('@')[1]
 
     const [projectId] = domain.split('.')
