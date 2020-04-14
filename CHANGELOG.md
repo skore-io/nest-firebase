@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/skore-io/nest-firebase/compare/v1.5.2...v1.5.3) (2020-04-14)
+
+
+### Bug Fixes
+
+* **security:** instantiate oauth client ([30e19b6](https://github.com/skore-io/nest-firebase/commit/30e19b6e77f442cd8fb70d60edc8dfab2c5c4436))
+
+
+
+
+
 ## [1.5.2](https://github.com/skore-io/nest-firebase/compare/v1.5.1...v1.5.2) (2020-04-14)
 
 
