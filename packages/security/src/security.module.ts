@@ -11,7 +11,7 @@ import { RestTemplate } from './template'
     GraphqlGuard,
     RestTemplate,
     UserGuard,
-    { provide: OAuth2Client, useValue: OAuth2Client },
+    { provide: OAuth2Client, useFactory: () => new OAuth2Client() },
   ],
   exports: [ClientGuard, UserGuard, OAuth2Client],
 })
