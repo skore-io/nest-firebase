@@ -11,7 +11,6 @@ import { OAuth2Client } from 'google-auth-library'
 import {
   ClientGuard,
   CurrentUser,
-  GraphqlGuard,
   IsClient,
   IsUser,
   UserGuard,
@@ -45,7 +44,7 @@ class User {
 @Resolver()
 export class UserResolver {
   @Query(() => User)
-  @IsUser({ graphql: true })
+  @IsUser()
   user(@CurrentUser({ graphql: true }) user: any) {
     return new User(user.id)
   }
@@ -63,7 +62,6 @@ export class UserResolver {
   controllers: [AuthedController],
   providers: [
     ClientGuard,
-    GraphqlGuard,
     UserResolver,
     UserGuard,
     { provide: OAuth2Client, useFactory: () => new OAuth2Client() },

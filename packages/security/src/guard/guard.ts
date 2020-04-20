@@ -1,11 +1,9 @@
 import { CanActivate, ExecutionContext } from '@nestjs/common'
-import { GqlExecutionContext } from '@nestjs/graphql'
+import { getRequestFromContext } from '../util'
 
 export abstract class Guard implements CanActivate {
-  constructor(private readonly graphql: boolean = false) {}
-
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = this.requestFromContext(context)
+    const request = getRequestFromContext(context)
 
     const token = this.authorizationHeader(request.headers)
 
@@ -18,12 +16,6 @@ export abstract class Guard implements CanActivate {
     } catch (error) {
       return false
     }
-  }
-
-  private requestFromContext(context: ExecutionContext): any {
-    return this.graphql
-      ? GqlExecutionContext.create(context).getContext().req
-      : context.switchToHttp().getRequest()
   }
 
   private authorizationHeader(headers: any): string {
