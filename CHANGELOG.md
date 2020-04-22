@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.6](https://github.com/skore-io/nest-firebase/compare/v1.5.5...v1.5.6) (2020-04-22)
+
+
+### Bug Fixes
+
+* **security:** remove graphql deps ([1e53c44](https://github.com/skore-io/nest-firebase/commit/1e53c4430200be95647daa23a259f4ff197b9bd2))
+
+
+
+
+
 ## [1.5.5](https://github.com/skore-io/nest-firebase/compare/v1.5.4...v1.5.5) (2020-04-22)
 
 
