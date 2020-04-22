@@ -28,14 +28,14 @@
   },
   "dependencies": {
     "@nestjs/config": "^0.4.0",
-    "@nestjs/graphql": "^7.2.1",
-    "@nestjs/platform-express": "^7.0.0",
     "axios": "^0.19.2",
     "google-auth-library": "^6.0.0",
     "rxjs": "^6.5.4",
     "ts-method-cache": "^3.3.1"
   },
   "devDependencies": {
+    "@nestjs/graphql": "^7.2.1",
+    "@nestjs/platform-express": "^7.0.0",
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",

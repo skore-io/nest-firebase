@@ -1,8 +1,9 @@
 import { ExecutionContext } from "@nestjs/common";
-import { GqlExecutionContext } from "@nestjs/graphql";
 
 export const getRequestFromContext = (context: ExecutionContext) => {
-  const graphqlReq = GqlExecutionContext.create(context).getContext().req
+  // https://github.com/nestjs/graphql/blob/c5dd5b3cc7dc1ec86fca5ff3e7b3e7998da7a729/lib/services/gql-execution-context.ts#L33
+  // Using this to avoid graphql deps in project
+  const graphqlReq = context.getArgByIndex(2).req
 
   return !!graphqlReq ? graphqlReq : context.switchToHttp().getRequest()
 }
