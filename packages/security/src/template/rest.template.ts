@@ -69,10 +69,11 @@ export class RestTemplate {
       .post(url, {
         query,
         variables,
+      }, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
-        },
+        }
       })
       .toPromise()
   }
