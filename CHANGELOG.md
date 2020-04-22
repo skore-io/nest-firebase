@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.5](https://github.com/skore-io/nest-firebase/compare/v1.5.4...v1.5.5) (2020-04-22)
+
+
+### Bug Fixes
+
+* **security:** export rest template ([3160e4a](https://github.com/skore-io/nest-firebase/commit/3160e4a4d41f2a156a5729ac1fecfe313fc52f32))
+
+
+
+
+
 ## [1.5.4](https://github.com/skore-io/nest-firebase/compare/v1.5.3...v1.5.4) (2020-04-20)
 
 **Note:** Version bump only for package root
