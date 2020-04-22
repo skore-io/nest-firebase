@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.7](https://github.com/skore-io/nest-firebase/compare/v1.5.6...v1.5.7) (2020-04-22)
+
+
+### Bug Fixes
+
+* **security:** wrong param in gql rest template ([23c6fe5](https://github.com/skore-io/nest-firebase/commit/23c6fe5c138bfbcab97201e897cb2b8248e84970))
+
+
+
+
+
 ## [1.5.6](https://github.com/skore-io/nest-firebase/compare/v1.5.5...v1.5.6) (2020-04-22)
 
 
