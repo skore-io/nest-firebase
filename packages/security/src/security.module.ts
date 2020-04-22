@@ -12,6 +12,6 @@ import { RestTemplate } from './template'
     UserGuard,
     { provide: OAuth2Client, useFactory: () => new OAuth2Client() },
   ],
-  exports: [ClientGuard, UserGuard, OAuth2Client],
+  exports: [ClientGuard, UserGuard, OAuth2Client, RestTemplate],
 })
 export class SecurityModule {}
