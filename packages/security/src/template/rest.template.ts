@@ -67,7 +67,8 @@ export class RestTemplate {
 
     return this.httpService
       .post(url, {
-        query
+        query,
+        variables,
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
