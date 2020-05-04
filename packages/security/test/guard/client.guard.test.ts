@@ -20,9 +20,7 @@ export class UserGuardTest {
 
           return {
             getPayload: () => ({
-              email: `some-email@${
-                idToken === 'INVALID_PROJECT' ? 'invalid' : 'project1'
-              }.iam.gserviceaccount.com`,
+              email: `${idToken === 'INVALID_PROJECT' ? 'invalid' : 'project1'}@appspot.gserviceaccount.com`,
               email_verified: true,
             }),
           }

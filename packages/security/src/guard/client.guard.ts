@@ -29,9 +29,7 @@ export class ClientGuard extends Guard {
   }
 
   private projectAllowed(email: string) {
-    const domain = email.split('@')[1]
-
-    const [projectId] = domain.split('.')
+    const [projectId] = email.split('@')
 
     const allowedProjects = this.configService
       .get('OAUTH_ALLOWED_PROJECTS', '')
