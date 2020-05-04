@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.10](https://github.com/skore-io/nest-firebase/compare/v1.5.9...v1.5.10) (2020-05-04)
+
+
+### Bug Fixes
+
+* **security:** project id extract ([d83c069](https://github.com/skore-io/nest-firebase/commit/d83c0699c20d8f9fd81db643aeb0ab86a67b7b07))
+
+
+
+
+
 ## [1.5.9](https://github.com/skore-io/nest-firebase/compare/v1.5.8...v1.5.9) (2020-04-29)
 
 **Note:** Version bump only for package root
