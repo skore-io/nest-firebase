@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/skore-io/nest-firebase/compare/v1.5.10...v1.6.0) (2020-05-26)
+
+
+### Features
+
+* support runtime options for pubsub ([8a589be](https://github.com/skore-io/nest-firebase/commit/8a589bef7967742781570554a8797a9ada8852db))
+
+
+
+
+
 ## [1.4.1](https://github.com/skore-io/nest-firebase/compare/v1.4.0...v1.4.1) (2020-04-07)
 
 
