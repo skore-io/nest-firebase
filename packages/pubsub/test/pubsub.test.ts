@@ -52,7 +52,9 @@ class NotValidModule { }
 export class PubsubHandlerTest extends BaseTest {
   @test('Given message with subscription then invoke WithDependencyListener')
   async listenerWithDep() {
-    const fn = Pubsub.topic('dependency', TestModule)
+    const fn = Pubsub.topic('dependency', TestModule, {
+      memory: '256MB',
+    })
     await firebaseFunctionsTest().wrap(fn)({ json: { id: 'dep' } })
   }
 

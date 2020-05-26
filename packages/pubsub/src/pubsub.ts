@@ -1,8 +1,8 @@
+import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
-import { EventContext, pubsub } from 'firebase-functions'
+import { EventContext, pubsub, RuntimeOptions, runWith } from 'firebase-functions'
 import { Message } from 'firebase-functions/lib/providers/pubsub'
 import { PubsubHandler } from './handler'
-import { Logger } from '@nestjs/common'
 
 /**
  * Encapsulate firebase function invocation
@@ -33,8 +33,10 @@ export class Pubsub {
    * @param topic - Pubsub topic to listen for messages
    * @param module - Nest application module with NestFirebaseModule imported
    */
-  static topic(topic: string, module: any) {
-    return pubsub.topic(topic).onPublish(async (message: Message, context: EventContext) => {
+  static topic(topic: string, module: any, runtimeOptions?: RuntimeOptions) {
+    const topicFn = runtimeOptions ? runWith(runtimeOptions).pubsub.topic(topic) : pubsub.topic(topic)
+
+    return topicFn.onPublish(async (message: Message, context: EventContext) => {
         const nest = await NestFactory.createApplicationContext(module)
 
         try {
