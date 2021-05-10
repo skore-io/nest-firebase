@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.4](https://github.com/skore-io/nest-firebase/compare/v1.7.2...v1.7.4) (2021-05-10)
+
+
+### Bug Fixes
+
+* add admin guard as provider ([ae2b272](https://github.com/skore-io/nest-firebase/commit/ae2b272a7ec7a08400c338b047a7f533f3ff9e2c))
+
+
+
+
+
 ## [1.7.2](https://github.com/skore-io/nest-firebase/compare/v1.7.0...v1.7.2) (2021-05-10)
 
 
