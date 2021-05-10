@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.2](https://github.com/skore-io/nest-firebase/compare/v1.7.0...v1.7.2) (2021-05-10)
+
+
+### Bug Fixes
+
+* export admin guard ([d3e1ac8](https://github.com/skore-io/nest-firebase/commit/d3e1ac8929b80e0bbc81a4c99804b7aee7401bba))
+
+
+
+
+
 # [1.7.0](https://github.com/skore-io/nest-firebase/compare/v1.6.0...v1.7.0) (2021-05-10)
 
 
