@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/skore-io/nest-firebase/compare/v1.6.0...v1.7.0) (2021-05-10)
+
+**Note:** Version bump only for package @nest-firebase/pubsub
+
+
+
+
+
 # [1.6.0](https://github.com/skore-io/nest-firebase/compare/v1.5.10...v1.6.0) (2020-05-26)
 
 

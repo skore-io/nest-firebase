@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/skore-io/nest-firebase/compare/v1.6.0...v1.7.0) (2021-05-10)
+
+
+### Features
+
+* **security:** add isAdmin decorator ([b484084](https://github.com/skore-io/nest-firebase/commit/b484084cd80df4fb79f246eb70fda140653a2212))
+* **security:** add readme ([ed52ebb](https://github.com/skore-io/nest-firebase/commit/ed52ebb8196220f7ee39ddc3ef945a2a6bb81c39))
+
+
+
+
+
 # [1.6.0](https://github.com/skore-io/nest-firebase/compare/v1.5.10...v1.6.0) (2020-05-26)
 
 
