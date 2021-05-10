@@ -7,6 +7,7 @@ import { RestTemplate } from './template'
 @Module({
   imports: [HttpModule, ConfigModule.forRoot()],
   providers: [
+    AdminGuard,
     ClientGuard,
     RestTemplate,
     UserGuard,
