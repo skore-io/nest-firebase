@@ -12,15 +12,14 @@ export class AdminGuard extends Guard {
   }
 
   async authorizeToken(token: string) {
-    return this.httpService
+    const { data } = await this.httpService
       .get(this.configService.get('USER_AUTH_URL'), {
         headers: { Authorization: token },
       })
       .toPromise()
-      .then(({ data }) => {
-        if (data.role !== 'admin') throw new ForbiddenException()
 
-        return data
-      })
+    if (data.role !== 'admin') throw new ForbiddenException()
+
+    return data
   }
 }
