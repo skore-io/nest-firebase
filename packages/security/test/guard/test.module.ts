@@ -13,6 +13,7 @@ import {
   CurrentUser,
   IsClient,
   IsUser,
+  IsAdmin,
   UserGuard,
 } from '../../src'
 
@@ -28,6 +29,12 @@ export class AuthedController {
   @IsUser()
   user(@CurrentUser() user: any) {
     return user
+  }
+
+  @Get('admin')
+  @IsAdmin()
+  admin(@CurrentUser() admin: any) {
+    return admin
   }
 }
 
