@@ -1,7 +1,7 @@
 import { HttpService, HttpStatus } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
-import * as request from 'supertest'
+import request from 'supertest'
 import { TestModule } from './test.module'
 
 @suite('[Guard] Graphql Guard')
