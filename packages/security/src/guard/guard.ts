@@ -13,7 +13,7 @@ export abstract class Guard implements CanActivate {
       const response = await this.authorizeToken(token)
       request.user = response
       return true
-    } catch (error) {
+    } catch {
       return false
     }
   }
