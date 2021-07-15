@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
 import { OAuth2Client } from 'google-auth-library'
-import * as request from 'supertest'
+import request from 'supertest'
 import { TestModule } from './test.module'
 
 @suite('[Guard] User Guard')

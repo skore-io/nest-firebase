@@ -2,7 +2,7 @@ import { HttpService, HttpStatus } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
-import * as request from 'supertest'
+import request from 'supertest'
 import { TestModule } from './test.module'
 
 @suite('[Guard] User Guard')
@@ -49,7 +49,7 @@ export class UserGuardTest {
       .get('/user')
       .auth('SHOULD_ASSERT_OK', { type: 'bearer' })
       .expect(HttpStatus.OK)
-    expect(response.body.id).toBe(1)
+    expect(response.body.id).toBe("1")
   }
 
   @test('Given token sent without bearer then return 403')

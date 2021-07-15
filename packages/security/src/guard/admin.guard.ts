@@ -1,5 +1,7 @@
 import { ForbiddenException, HttpService, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { plainToClass } from 'class-transformer'
+import { User } from '../domain'
 import { Guard } from './guard'
 
 @Injectable()
@@ -11,7 +13,7 @@ export class AdminGuard extends Guard {
     super()
   }
 
-  async authorizeToken(token: string) {
+  async authorizeToken(token: string): Promise<User> {
     const { data } = await this.httpService
       .get(this.configService.get('USER_AUTH_URL'), {
         headers: { Authorization: token },
@@ -20,6 +22,6 @@ export class AdminGuard extends Guard {
 
     if (data.role !== 'admin') throw new ForbiddenException()
 
-    return data
+    return plainToClass(User, data, { excludeExtraneousValues: true })
   }
 }

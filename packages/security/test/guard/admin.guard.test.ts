@@ -1,4 +1,4 @@
-import * as request from 'supertest'
+import request from 'supertest'
 import { HttpService, HttpStatus } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { suite, test } from '@testdeck/jest'
@@ -77,6 +77,6 @@ export class AdminGuardTest {
       .get('/admin')
       .auth('SHOULD_ASSERT_OK', { type: 'bearer' })
       .expect(HttpStatus.OK)
-    expect(response.body.id).toBe(1)
+    expect(response.body.id).toBe("1")
   }
 }
