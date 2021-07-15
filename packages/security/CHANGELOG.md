@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/skore-io/nest-firebase/compare/v1.7.4...v1.8.0) (2021-07-15)
+
+
+### Bug Fixes
+
+* supertest import ([a6f29d6](https://github.com/skore-io/nest-firebase/commit/a6f29d6470c7c091c267f308d5ecc4ea0371880f))
+
+
+### Features
+
+* add user domain ([10c5035](https://github.com/skore-io/nest-firebase/commit/10c50358910cf36d33b45bfdace1864e1ff5c395))
+
+
+
+
+
 ## [1.7.4](https://github.com/skore-io/nest-firebase/compare/v1.7.2...v1.7.4) (2021-05-10)
 
 
