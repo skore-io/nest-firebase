@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/skore-io/nest-firebase/compare/v1.8.0...v1.9.0) (2021-07-15)
+
+
+### Features
+
+* add team domain ([4f800b0](https://github.com/skore-io/nest-firebase/commit/4f800b03d43581a2f9bb25d8d6c82a9754a3f07d))
+* add team ids parser ([4049f19](https://github.com/skore-io/nest-firebase/commit/4049f190f20dcda88613c4a04a901193e18eb960))
+
+
+
+
+
 # [1.8.0](https://github.com/skore-io/nest-firebase/compare/v1.7.4...v1.8.0) (2021-07-15)
 
 
