@@ -38,4 +38,8 @@ export class User {
 
   @Expose({ name: 'created_at' })
   createdAt!: Date
+
+  get teamIds(): string[] {
+    return this.teams.map((team) => team.id)
+  }
 }
