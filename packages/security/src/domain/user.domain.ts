@@ -1,4 +1,5 @@
-import { Expose, Transform } from 'class-transformer'
+import { Expose, Transform, Type } from 'class-transformer'
+import { Team } from './team.domain'
 
 export class User {
   @Transform(({ value }) => String(value))
@@ -30,6 +31,15 @@ export class User {
   @Expose()
   preferences: any
 
+  @Type(() => Team)
+  @Transform(({ value }) => value || [])
+  @Expose()
+  teams: Team[] = []
+
   @Expose({ name: 'created_at' })
   createdAt!: Date
+
+  get teamIds(): string[] {
+    return this.teams.map((team) => team.id)
+  }
 }
